@@ -61,7 +61,7 @@
 
    - name: Copying the HTML code in the Directory
      copy: 
-       src: "/root/Desktop/index.html"
+       src: "home/gnanasekar/Desktop/index.html"
        dest: "/root/pv"
 
    - name: Launching an HTTPD Container
