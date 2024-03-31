@@ -8,8 +8,9 @@
      yum_repository:
        name: Docker
        description: "Docker Repo"
-       baseurl: "https://download.docker.com/linux/centos/docker-ce.repo" 
-       gpgcheck: no
+       baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
+       gpgcheck: yes
+       gpgkey: "https://download.docker.com/linux/centos/gpg" 
      register: x
 
    - name: Checking Configuration Status
@@ -18,7 +19,7 @@
 
    - name: Installing Docker
      package:
-       name: "docker-ce-18.06.3.ce-3.el7.x86_64"
+       name: "docker-ce"
        state: present
      register: y
 
