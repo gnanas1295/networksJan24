@@ -1,0 +1,82 @@
+---
+- name: Installing Docker, creating Container and installing Webserver inside the same with the Git Installed
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+	- name: Configuring Docker Repository
+      yum_repository:
+       name: Docker
+       description: "Docker Repo"
+       baseurl: "https://download.docker.com/linux/centos/docker-ce.repo" 
+       gpgcheck: no
+      register: x
+	 
+	- name: Checking Configuration Status
+      debug:
+       var: x.failed
+	
+	- name: Installing Docker
+      package:
+       name: "docker-ce-18.06.3.ce-3.el7.x86_64"
+       state: present
+      register: y
+	
+	- name: Checking Install Status
+      debug:
+       var: y.failed
+	
+	- name: Starting Docker Daemon
+      service:
+       name: docker
+       state: started
+       enabled: yes
+      when: y.failed == false
+	  
+	- name: Install
+     command: "pip install docker-py"
+	 
+    - name: Configuring Docker network for webserver
+      docker_network:
+        name: webserver1_network
+        driver: bridge
+        ipam_config:
+          - subnet: 172.168.10.0/30
+
+    - name: Pull a docker image
+      docker_image:
+        name: httpd
+		tag: latest
+        source: pull
+	  register: z
+	
+	- name: Checking Pull Status
+	  debug:
+	    var: z
+	
+	- name: Creating a Persistent Volume Dir
+      file:
+       path: "/root/pv"
+       state: directory
+	
+	- name: Copying the HTML code in the Directory
+      copy: 
+       src: "/root/Desktop/index.html"
+       dest: "/root/pv"
+
+    - name: Launching an HTTPD Container
+	  when: z.failed == false
+      docker_container:
+        name: apache-server-container
+        image: httpd
+        state: started
+        networks:
+          - name: webserver1_network
+        ports:
+          - "8080:80"  
+		volumes: 
+          - /root/pv:/usr/local/apache2/htdocs
+        command: /bin/bash -c "apt-get update && apt-get install -y git && exec httpd -DFOREGROUND"
+
+
