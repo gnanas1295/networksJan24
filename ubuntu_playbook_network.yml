@@ -54,7 +54,7 @@
         name: httpd
         tag: latest
         source: pull
-     register: statusinstall
+	register: statusinstall
 	 
    - name: Checking Pull Status
      debug: 
