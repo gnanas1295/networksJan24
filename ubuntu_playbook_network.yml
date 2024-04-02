@@ -53,8 +53,8 @@
      docker_image: 
         name: httpd
         tag: latest
-        source: pull
-	register: statusinstall
+	source: pull
+     register: statusinstall
 	 
    - name: Checking Pull Status
      debug: 
