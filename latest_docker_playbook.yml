@@ -7,7 +7,7 @@
    - name: Configuring Docker Repository
      yum_repository:
        name: Docker
-       description: "Docker Repo"
+       description: "DockerRepo"
        baseurl: "https://download.docker.com/linux/centos/7/x86_64/stable/"
        gpgcheck: yes
        gpgkey: "https://download.docker.com/linux/centos/gpg" 
