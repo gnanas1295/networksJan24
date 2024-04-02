@@ -41,13 +41,6 @@
 
    - name: Install
      command: "pip install docker-py"
-   
-   - name: Configuting Docker Network for Webserver
-     docker_network:
-       name: webserver_network
-       driver: bridge
-       ipam_config:
-         - subnet: 172.168.10.0/30
 
    - name: Pull a Docker Image
      docker_image: 
@@ -70,8 +63,6 @@
        name: apache-server-container
        image: httpd
        state: started
-       networks:
-         - name: webserver_network
        exposed_ports:
          - "80"
        ports:
