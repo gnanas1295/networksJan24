@@ -58,4 +58,4 @@ A network diagram illustrating the relationships between the GitHub repository, 
 
 For any inquiries or assistance, please drop a message.
 
-*Note:* Make sure Docker is installed on the target machine(s) and Ansible is installed on the control machine before executing the playbook.
+*Note:* Make sure Ansible is installed on the control machine before executing the playbook.
