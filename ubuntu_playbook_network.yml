@@ -58,8 +58,7 @@
 	 
    - name: Checking Pull Status
      debug: 
-       var: z
-
+       var: statusinstall
    - name: Creating a Persistent Volume Dir
      file:
        path: "/root/pv"
@@ -71,7 +70,7 @@
        dest: "/root/pv"
 
    - name: Launching an HTTPD Container
-     when: z.failed == false
+     when: statusinstall.failed == false
      docker_container:
        name: apache-server-container
        image: httpd
