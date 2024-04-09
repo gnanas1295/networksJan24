@@ -1,0 +1,43 @@
+---
+- name: Deploy Apache Docker Container
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Create Docker network
+      docker_network:
+        name: my_network
+        driver: bridge
+        ipam_config:
+          - subnet: 172.168.10.0/30
+
+    - name: Pull Apache Docker image
+      docker_image:
+        name: httpd
+        source: pull
+        state: present
+
+    - name: Creating a Persistent Volume Dir
+      file:
+        path: "/Users/mruduladidde/md"
+        state: directory
+
+    - name: Copying the HTML code in the Directory
+      copy:
+        src: "/Users/mruduladidde/Desktop/CA1/"
+        dest: "/Users/mruduladidde/md"
+
+    - name: Launching an HTTPD Container
+      docker_container:
+        name: apache
+        image: httpd
+        state: started
+        networks:
+          - name: my_network
+        exposed_ports:
+          - "80"
+        ports:
+          - "8888:80"
+        volumes:
+          - /Users/mruduladidde/md:/usr/local/apache2/htdocs
